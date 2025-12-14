@@ -1,4 +1,4 @@
-import { S3Client, PutObjectCommand, GetObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, GetObjectCommand, ListObjectsV2Command, DeleteObjectCommand } from '@aws-sdk/client-s3';
 
 /**
  * 从 chrome.storage 获取 R2 配置
@@ -50,6 +50,21 @@ export async function uploadData(data, filename = 'excalidraw-backup.json') {
     const client = await createS3Client();
     const config = await getR2Config();
     
+    // 先尝试删除旧文件（如果存在），确保覆盖
+    try {
+      const deleteCommand = new DeleteObjectCommand({
+        Bucket: config.r2Bucket,
+        Key: filename,
+      });
+      await client.send(deleteCommand);
+    } catch (deleteError) {
+      // 如果文件不存在，忽略删除错误（这是正常的）
+      if (deleteError.name !== 'NoSuchKey' && deleteError.$metadata?.httpStatusCode !== 404) {
+        console.warn('删除旧文件时出现警告（可忽略）:', deleteError.message);
+      }
+    }
+    
+    // 上传新文件
     const jsonString = JSON.stringify(data, null, 2);
     const buffer = new TextEncoder().encode(jsonString);
     
@@ -58,10 +73,14 @@ export async function uploadData(data, filename = 'excalidraw-backup.json') {
       Key: filename,
       Body: buffer,
       ContentType: 'application/json',
+      // 明确设置元数据，确保覆盖
+      Metadata: {
+        'upload-timestamp': Date.now().toString(),
+      },
     });
     
     await client.send(command);
-    return { success: true, message: '上传成功' };
+    return { success: true, message: '上传成功（已覆盖旧文件）' };
   } catch (error) {
     console.error('上传失败:', error);
     return { 
