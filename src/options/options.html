@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excalidraw R2 Sync - 设置</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      padding: 24px;
+      max-width: 600px;
+      margin: 0 auto;
+      background: #f5f5f5;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 8px;
+      padding: 32px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+      font-size: 24px;
+      margin-bottom: 8px;
+      color: #333;
+    }
+    
+    .subtitle {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 8px;
+    }
+    
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: #4CAF50;
+    }
+    
+    .help-text {
+      font-size: 12px;
+      color: #666;
+      margin-top: 4px;
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+    }
+    
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn-primary {
+      background: #4CAF50;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #45a049;
+    }
+    
+    .btn-secondary {
+      background: #2196F3;
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background: #0b7dda;
+    }
+    
+    .btn-test {
+      background: #ff9800;
+      color: white;
+    }
+    
+    .btn-test:hover {
+      background: #e68900;
+    }
+    
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
+    .message {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 4px;
+      font-size: 14px;
+      display: none;
+    }
+    
+    .message.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      display: block;
+    }
+    
+    .message.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Cloudflare R2 配置</h1>
+    <p class="subtitle">配置您的 R2 存储凭证以同步 Excalidraw 绘图数据</p>
+    
+    <form id="configForm">
+      <div class="form-group">
+        <label for="r2Endpoint">R2 Endpoint URL</label>
+        <input 
+          type="text" 
+          id="r2Endpoint" 
+          placeholder="https://<accountid>.r2.cloudflarestorage.com"
+          required
+        />
+        <p class="help-text">您的 Cloudflare R2 Endpoint 地址</p>
+      </div>
+      
+      <div class="form-group">
+        <label for="r2Bucket">Bucket Name</label>
+        <input 
+          type="text" 
+          id="r2Bucket" 
+          placeholder="my-bucket"
+          required
+        />
+        <p class="help-text">R2 Bucket 名称</p>
+      </div>
+      
+      <div class="form-group">
+        <label for="r2AccessKey">Access Key ID</label>
+        <input 
+          type="text" 
+          id="r2AccessKey" 
+          placeholder="your-access-key-id"
+          required
+        />
+        <p class="help-text">R2 API Token 的 Access Key ID</p>
+      </div>
+      
+      <div class="form-group">
+        <label for="r2SecretKey">Secret Access Key</label>
+        <input 
+          type="password" 
+          id="r2SecretKey" 
+          placeholder="your-secret-access-key"
+          required
+        />
+        <p class="help-text">R2 API Token 的 Secret Access Key</p>
+      </div>
+      
+      <div class="button-group">
+        <button type="button" id="testBtn" class="btn-test">测试连接</button>
+        <button type="button" id="saveBtn" class="btn-primary">保存配置</button>
+      </div>
+      
+      <div id="message" class="message"></div>
+    </form>
+  </div>
+  
+  <script type="module" src="./options.js"></script>
+</body>
+</html>
+

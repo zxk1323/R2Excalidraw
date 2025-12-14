@@ -1,0 +1,23 @@
+{
+  "name": "r2excalidraw",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite build --watch --mode development",
+    "build": "vite build && node scripts/postbuild.js",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@vitejs/plugin-legacy": "^6.1.1",
+    "vite": "^6.4.1",
+    "vite-plugin-static-copy": "^3.1.4"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.948.0"
+  }
+}
